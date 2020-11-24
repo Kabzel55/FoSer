@@ -8,14 +8,37 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((Button)findViewById(R.id.buttonStart)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickStart(v);
+            }
+        });
+
+        ((Button)findViewById(R.id.buttonStop)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickStop(v);
+            }
+        });
+
+        ((Button)findViewById(R.id.buttonRestart)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickRestart(v);
+            }
+        });
     }
 
     @Override
@@ -25,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         switch (item.getItemId()){
             case R.id.itemSettings: startActivity(new Intent(this,SettingsActivity.class)); return true;
             case R.id.itemExit: finishAndRemoveTask(); return true;
