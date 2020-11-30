@@ -1,23 +1,19 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/app_name">
-        @string/messages_header
 
+    <PreferenceCategory app:title="@string/messages_header">
         <EditTextPreference
-            app:key="signature"
+            app:icon="@drawable/circle"
+            app:defaultValue="FoSer"
+            app:key="message"
             app:title="@string/signature_title"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
+        <CheckBoxPreference
+            app:key="show_time"
+            app:summary="Yes/No"
+            app:title="@string/reply_title" />
     </PreferenceCategory>
-
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
@@ -26,7 +22,7 @@
 
         <SwitchPreferenceCompat
             app:dependency="sync"
-            app:key="attachment"
+            app:key="double"
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
