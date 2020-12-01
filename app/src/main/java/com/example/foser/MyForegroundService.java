@@ -5,14 +5,19 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyForegroundService extends Service {
 
@@ -29,14 +34,48 @@ public class MyForegroundService extends Service {
     //3. Wartości ustawień
     private String message;
     private Boolean show_time, do_work, double_speed;
+    private final long period = 2000; //2s
+
+    //4.
+    private Context ctx;
+    private Intent notificationIntent;
+    private PendingIntent pendingIntent;
+
+    //5.
+    private int counter;
+    private Timer timer;
+    private TimerTask timerTask;
+    final Handler handler = new Handler();
+
 
         @Override
-        public void onCreate() {
+        public void onCreate()
+        {
             super.onCreate();
-        }
+            ctx = this;
+            notificationIntent = new Intent(ctx, MainActivity.class);
+            pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
 
+            counter = 0;
+
+            timer = new Timer();
+
+            timerTask = new TimerTask() {
+                @Override
+                public void run()
+                {
+                    counter++;
+                    handler.post(runnable);
+                }
+            };
+
+        }
         @Override
         public void onDestroy() {
+            handler.removeCallbacks(runnable);
+            timer.cancel();
+            timer.purge();
+            timer = null;
             super.onDestroy();
         }
 
@@ -48,7 +87,8 @@ public class MyForegroundService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
         //return super.onStartCommand(intent, flags, startId);
 
         message = intent.getStringExtra(MESSAGE);
@@ -57,11 +97,6 @@ public class MyForegroundService extends Service {
         double_speed = intent.getBooleanExtra(WORK_DOUBLE,false);
 
         createNotificationChannel();
-
-        Intent notificationIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
-
-
         Notification notification = new Notification.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_my_icon)
                 .setContentTitle(getString(R.string.ser_title))
@@ -79,7 +114,9 @@ public class MyForegroundService extends Service {
     }
 
     private void doWork() {
-
+        if(do_work) {
+            timer.schedule(timerTask, 0L, double_speed ? period / 2L : period);
+        }
         try {
             Thread.sleep(5000);
 
@@ -96,10 +133,29 @@ public class MyForegroundService extends Service {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
+    private void createNotificationChannel()
+    {
         NotificationChannel serviceChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.createNotificationChannel(serviceChannel);
     }
+
+    final Runnable runnable = new Runnable()
+    {
+        @Override
+        public void run() {
+            Notification notification = new Notification.Builder(ctx, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_my_icon)
+                    .setContentTitle(getString(R.string.ser_title))
+                    .setShowWhen(show_time)
+                    .setContentText(message + " " + String.valueOf(counter))
+                    .setLargeIcon(BitmapFactory.decodeResource (getResources() , R.drawable.circle ))
+                    .setContentIntent(pendingIntent)
+                    .build();
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.notify(1,notification);
+        }
+    };
 
 }
