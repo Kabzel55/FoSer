@@ -1,22 +1,5 @@
 <resources>
     <string name="app_name">FoSer</string>
-    <!-- Settings Activity Title -->
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header"> Notification information</string>
-    <string name="sync_header">Synchronization</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Message to show</string>
-    <string name="reply_title">Display when</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Work periodicly</string>
-    <string name="attachment_title">Double speed</string>
-    <string name="attachment_summary_on">Double working frequency </string>
-    <string name="attachment_summary_off">Standard operating frequency</string>
-
     <!-- Main activity -->
     <string name="info_state"> Service state: </string>
     <string name="info_service_running">Service IS running...</string>
@@ -36,4 +19,29 @@
     <!-- Main menu -->
     <string name="titleSettings">Settings</string>
     <string name="titleExit">Exit</string>
+    <string name="serviceSettings">Service settings</string>
+    <string name="settings">Settings...</string>
+
+    <!-- Settings Activity Title -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header"> Notification information</string>
+    <string name="sync_header">Synchronization</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Message to show</string>
+    <string name="reply_title">Display when</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Work periodicly</string>
+    <string name="attachment_title">Double speed</string>
+    <string name="attachment_summary_on">Double working frequency </string>
+    <string name="attachment_summary_off">Standard operating frequency</string>
+
+    <!-- Work speed -->
+    <string name="title_workSpeed">Work speed</string>
+    <string name="speed_2s"> Delay 2 seconds</string>
+    <string name="speed_5s"> Delay 5 seconds</string>
+    <string name="speed_10s">Delay 10 seconds</string>
 </resources>
